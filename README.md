@@ -89,7 +89,7 @@ The transmitter operates using four states:
 - ### Simulation Waveform
 
 <p align="center">
-  <img src="waveforms/uart_tx_waveform.png">
+  <img src="waveforms/tx20-200.png">
 </p>
 
 The waveform confirms successful transmission of the test byte (`0xAA`) using the UART 8-N-1 frame format. The FSM progresses through the IDLE, START, DATA, and STOP states while the baud counter controls the timing of each transmitted bit.
