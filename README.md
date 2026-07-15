@@ -6,6 +6,17 @@ A UART (Universal Asynchronous Receiver/Transmitter) implementation in **Verilog
 ![Simulator](https://img.shields.io/badge/Simulator-Icarus%20Verilog-green)
 ![Waveforms](https://img.shields.io/badge/Waveforms-GTKWave-orange)
 
+## Table of Contents
+
+- [Project Overview](#project-overview)
+- [UART Frame Format](#uart-frame-format)
+- [Repository Structure](#repository-structure)
+- [UART Transmitter](#uart-transmitter)
+- [UART Receiver](#uart-receiver)
+- [Simulation](#simulation)
+- [Results](#results)
+- [Future Improvements](#future-improvements)
+- [Author](#author)
 ## Project Overview
 
 UART (Universal Asynchronous Receiver/Transmitter) is an asynchronous serial communication interface that enables data transfer between digital devices using separate transmit (TX) and receive (RX) lines. A UART frame consists of a start bit, 8 data bits (transmitted LSB first), and a stop bit.
@@ -25,3 +36,61 @@ The implemented UART frame follows the standard 8-N-1 format:
 - **Parity:** None
 - **Stop Bit:** Logic 1
 
+## Repository Structure
+
+```text
+UART-Verilog
+│
+├── rtl/
+│   ├── uart_tx.v
+│   └── uart_rx.v
+│
+├── tb/
+│   ├── uart_tx_tb.v
+│   └── uart_rx_tb.v
+│
+├── images/
+│   ├── tx_architecture.png
+│   ├── tx_fsm.png
+│   ├── rx_architecture.png
+│   └── rx_fsm.png
+│
+├── waveforms/
+│   ├── uart_tx_waveform.png
+│   └── uart_rx_waveform.png
+│
+└── README.md
+```
+
+## UART Transmitter
+
+The UART transmitter converts an 8-bit parallel input into a serial data stream. The transmission follows the standard UART 8-N-1 frame format by sending one start bit, eight data bits (LSB first), and one stop bit. An FSM controls the transmission process while a baud counter ensures correct timing between successive bits.
+
+### Architecture
+
+<p align="center">
+  <img src="images/tx_architecture.png" width="700">
+
+  ### Finite State Machine (FSM)
+
+<p align="center">
+  <img src="images/tx_fsm.png" width="550">
+</p>
+
+### Operation
+
+The transmitter operates using four states:
+
+- **IDLE** – Waits for the `start` signal while keeping the TX line HIGH.
+- **START** – Transmits the start bit (`0`) for one baud period.
+- **DATA** – Sends eight data bits serially, beginning with the least significant bit (LSB).
+- **STOP** – Transmits the stop bit (`1`) and returns to the IDLE state, ready for the next transmission.
+
+- ### Simulation Waveform
+
+<p align="center">
+  <img src="waveforms/uart_tx_waveform.png">
+</p>
+
+The waveform confirms successful transmission of the test byte (`0xAA`) using the UART 8-N-1 frame format. The FSM progresses through the IDLE, START, DATA, and STOP states while the baud counter controls the timing of each transmitted bit.
+</p>
