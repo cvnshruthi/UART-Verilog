@@ -1,1 +1,5 @@
-
+# Simulation outputs
+*.vcd
+*.gtkw
+*_sim
+*.out
